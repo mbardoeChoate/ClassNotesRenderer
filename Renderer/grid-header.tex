@@ -1,0 +1,24 @@
+\usepackage{tikz}
+\usepackage{eso-pic}
+
+\newcommand{\DrawGrid}{
+  \begin{tikzpicture}[remember picture, overlay]
+    \foreach \x in {0,...,28} {
+      \pgfmathsetmacro\xval{0.75*\x}
+      \draw[gray!20] (\xval,0) -- (\xval,27.75);
+    }
+    \foreach \y in {0,...,37} {
+      \pgfmathsetmacro\yval{0.75*\y}
+      \draw[gray!20] (0,\yval) -- (21,\yval);
+    }
+  \end{tikzpicture}
+}
+
+% Repeat on every page using a special TeX trick
+\makeatletter
+\AddToShipoutPictureBG{%
+  \ifnum\value{page}>0
+    \DrawGrid
+  \fi
+}
+\makeatother
