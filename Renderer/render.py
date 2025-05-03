@@ -45,11 +45,18 @@ class Renderer:
             lines = f.readlines()
 
         # Extract [comment]: commands
-        commands = [
-            line.split(":", 1)[1].strip()
-            for line in lines
-            if line.strip().startswith("<!-- command:")
-        ]
+        commands = []
+        for line in lines:
+            line = line.strip()
+            if line.startswith("<!--") and "command:" in line:
+                # Extract the part after 'command:' and before the closing '-->'
+                try:
+                    content = line.split("command:", 1)[1]
+                    command = content.split("-->", 1)[0].strip()
+                    commands.append(command)
+                except IndexError:
+                    print("Index Error")
+                    continue  # malformed line, skip it
 
         print(f"In the file {filename.name} we found the commands: {commands}")
 
